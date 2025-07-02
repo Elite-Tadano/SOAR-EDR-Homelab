@@ -17,7 +17,7 @@ This guide explains how to install and configure the LimaCharlie EDR agent on a 
 ## 🔧 Step-by-Step Installation
 
 ### 1. **Log in to LimaCharlie**
-- Go to: [https://console.limacharlie.io](https://console.limacharlie.io)
+- Go to: [https://limacharlie.io](https://limacharlie.io)
 - Create a new **Sensor Deployment Key** if not already available.
 - Note your **Deployment Key** and **Tenant ID**.
 
