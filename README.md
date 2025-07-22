@@ -50,18 +50,46 @@ A high-level overview of the data flow and component interaction:
 2.  **Write a D&R Rule:** In LimaCharlie, navigate to `D&R Rules` and create a new rule. The rule will look for new processes where the file path ends with the name of the tool.
 
     ```yaml
-    # Example Rule to Detect LaZagne.exe
-    event: NEW_PROCESS
-    op: ends with
-    path: event/FILE_PATH
-    value: LaZagne.exe
+    # Rule to Detect LaZagne.exe
+    events:
+  - NEW_PROCESS
+  - EXISTING_PROCESS
+op: and
+rules:
+  - op: is windows
+  - op: or
+    rules:
+      - case sensitive: false
+        op: ends with
+        path: event/FILE_PATH
+        value: lazagne.exe
+      - case sensitive: false
+        op: ends with
+        path: event/COMMAND_LINE
+        value: all
+      - case sensitive: false
+        op: contains
+        path: event/COMMAND_LINE
+        value: lazagne
+      - case sensitive: false
+        op: is
+        path: event/HASH
+        value: dc06d62ee95062e714f2566c95b8edaabfd387023b1bf98a09078b84007d5268
     ```
 3.  **Define the Response:** Configure the rule to generate a `report` action. This creates a formal detection in LimaCharlie.
 
     ```yaml
     # Response Action
     - action: report
-      name: Hack-Tool-Detected-LaZagne
+  metadata:
+    author: Jugal
+    description: Detects Lazagne  (SOAR-EDR-Tools) from view
+    falsepositives:
+      - Unlikely
+    level: medium
+    tags:
+      - attack_credentials_access
+  name: EDR-Hacktools-Lazagne
     ```
 
 ### Part 3: Tines & Communication Channel Setup
@@ -84,11 +112,12 @@ A high-level overview of the data flow and component interaction:
     * Configure it to send a detailed alert to a specified email address.
 4.  **Handle Interactive Response:**
     * Add an `HTTP Request` action for the "Isolate Host" path.
-    * Configure it to make a POST request to the LimaCharlie API endpoint for isolating a sensor (`/dr/{sid}/isolate`).
+    * Configure it to make a POST request to the LimaCharlie API endpoint for isolating a sensor.
     * You will need to create a LimaCharlie API key with the necessary permissions and store it as a Credential in Tines.
     * The Sensor ID (`sid`) will be available from the initial webhook data.
 5.  **Provide Feedback:**
     * Add final `Send to Slack` actions to confirm the outcome (e.g., "Host has been isolated" or "Incident ignored").
+<img width="1023" height="762" alt="Screenshot 2025-07-08 192702" src="https://github.com/user-attachments/assets/c7cdd0f7-5620-4267-9cee-e5b36939db4a" />
 
 ## 🚀 Running the Lab
 
@@ -96,7 +125,8 @@ A high-level overview of the data flow and component interaction:
 2.  On the Windows victim machine, download and execute the malicious file.
 3.  Observe the detection appearing in LimaCharlie.
 4.  Check your Slack channel and email for the automated alert from Tines.
-5.  Click the "Isolate Host" button in Slack.
-6.  Verify in LimaCharlie that the endpoint is now isolated and in your Slack channel that the confirmation message has been received.
+<img width="1337" height="289" alt="Screenshot 2025-07-07 202233" src="https://github.com/user-attachments/assets/a1c373a1-fa6a-4f1c-a8d2-695a312d5c88" />
+6.  Click the "Isolate Host" button in Slack.
+7.  Verify in LimaCharlie that the endpoint is now isolated and in your Slack channel that the confirmation message has been received.
 
 This project provides a solid foundation for building more complex security automations and is an excellent showcase of practical defensive cybersecurity skills.
