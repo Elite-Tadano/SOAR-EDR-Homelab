@@ -52,44 +52,44 @@ A high-level overview of the data flow and component interaction:
     ```yaml
     # Rule to Detect LaZagne.exe
     events:
-  - NEW_PROCESS
-  - EXISTING_PROCESS
-op: and
-rules:
-  - op: is windows
-  - op: or
+     - NEW_PROCESS
+     - EXISTING_PROCESS
+    op: and
     rules:
-      - case sensitive: false
-        op: ends with
-        path: event/FILE_PATH
-        value: lazagne.exe
-      - case sensitive: false
-        op: ends with
-        path: event/COMMAND_LINE
-        value: all
-      - case sensitive: false
-        op: contains
-        path: event/COMMAND_LINE
-        value: lazagne
-      - case sensitive: false
-        op: is
-        path: event/HASH
-        value: dc06d62ee95062e714f2566c95b8edaabfd387023b1bf98a09078b84007d5268
+     - op: is windows
+     - op: or
+       rules:
+         - case sensitive: false
+           op: ends with
+           path: event/FILE_PATH
+           value: lazagne.exe
+         - case sensitive: false
+           op: ends with
+           path: event/COMMAND_LINE
+           value: all
+         - case sensitive: false
+           op: contains
+           path: event/COMMAND_LINE
+           value: lazagne
+         - case sensitive: false
+           op: is
+           path: event/HASH
+           value: dc06d62ee95062e714f2566c95b8edaabfd387023b1bf98a09078b84007d5268
     ```
 3.  **Define the Response:** Configure the rule to generate a `report` action. This creates a formal detection in LimaCharlie.
 
     ```yaml
     # Response Action
     - action: report
-  metadata:
-    author: Jugal
-    description: Detects Lazagne  (SOAR-EDR-Tools) from view
-    falsepositives:
-      - Unlikely
-    level: medium
-    tags:
-      - attack_credentials_access
-  name: EDR-Hacktools-Lazagne
+      metadata:
+        author: Jugal
+        description: Detects Lazagne  (SOAR-EDR-Tools) from view
+        falsepositives:
+          - Unlikely
+        level: medium
+        tags:
+          - attack_credentials_access
+      name: EDR-Hacktools-Lazagne
     ```
 
 ### Part 3: Tines & Communication Channel Setup
