@@ -126,6 +126,7 @@ A high-level overview of the data flow and component interaction:
 3.  Observe the detection appearing in LimaCharlie.
 4.  Check your Slack channel and email for the automated alert from Tines.
 <img width="1337" height="289" alt="Screenshot 2025-07-07 202233" src="https://github.com/user-attachments/assets/a1c373a1-fa6a-4f1c-a8d2-695a312d5c88" />
+
 6.  Click the "Isolate Host" button in Slack.
 7.  Verify in LimaCharlie that the endpoint is now isolated and in your Slack channel that the confirmation message has been received.
 
